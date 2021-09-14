@@ -32,3 +32,6 @@ Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&ut
 ## PR link:
 
 https://github.com/sarazwairi/cookie-stand-admin/pulls/1
+https://github.com/sarazwairi/cookie-stand-admin/pulls/2
+https://github.com/sarazwairi/cookie-stand-admin/pulls/3
+
