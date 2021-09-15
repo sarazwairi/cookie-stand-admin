@@ -1,18 +1,25 @@
-import Head from 'next/head'
-import { useState } from 'react'
 import CookieStandAdmin from '../components/CookieStandAdmin';
-import CookieStandForm from '../components/CreateForm';
-
+import LoginForm from '../components/LoginForm';
+import { useState } from 'react';
+import { getToken } from '../data';
 export default function Home() {
 
-  
-  return (
-    <div className="">
+  const [token, setToken] = useState();
+  const [username, setUsername] = useState('');
 
-      
-        <CookieStandAdmin/>
+  async function loginHandler(values) {
+  //  values.preventDefault();
+   const fetchedToken=await getToken(values);
+   setToken(fetchedToken);
+   setUsername(values.username);
+  }
+  function logoutHandler(){
+    setToken(null);
+  }
  
-    
-    </div>
-  )
+
+  if (!token) return <LoginForm onSubmit={loginHandler} />
+
+  return <CookieStandAdmin token={token} onlogout = { logoutHandler }username = { username } />
+
 }

@@ -1,23 +1,52 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CookieStandHeader from './Header'
 import CookieStandFooter from './Footer';
 import CookieStandForm from './CreateForm';
 import CookieStandTable from './ReportTable';
-import { hours } from '../data'
+import useSWR from 'swr';
+import { CookieStand, fetchWithToken, postWithToken, deleteWithToken, apiUrl } from '../data'
 
 
-export default function CookieStandAdmin() {
-    const hourly_sales = [48, 42, 30, 24, 42, 24, 36, 42, 42, 48, 36, 42, 24, 36]
-    const [stands, setStands] = useState([])
-    function onCreate(event) {
-        event.preventDefault()
-        const newstands = {
-            location: event.target.location.value,
-            hourly_sales: hourly_sales,
+export default function CookieStandAdmin({token,onlogout,username}) {
+    const {data, error, mutate} = useSWR([apiUrl, token], fetchWithToken);
 
-        }
-        setStands([...stands, newstands])
+    const [cookieStands, setCookieStands] = useState([]);
+
+    useEffect(() => {
+        if (!data) return;
+        setCookieStands(data);
+    }, [data])
+
+    if (error) return <h2>ERROR</h2>
+    if (!data) return <h2>Loading....</h2>
+
+    async function createHandler(values) {
+
+        const newStand = CookieStand.fromValues(values);
+        
+        newStand.location += '...'; // ellipsis represents loading
+
+        const updatedStands = [newStand, ...cookieStands]
+
+        mutate(updatedStands, false);
+
+        await postWithToken(token, values);
+
+        mutate();
+    }
+
+    async function deleteHandler(stand) {
+
+        const updatedStands = cookieStands.filter(storedStand => storedStand.id !== stand.id);
+        
+        mutate(updatedStands, false);
+
+        await deleteWithToken(stand.id, token);
+
+        mutate(async stands => {
+            return stands.filter(candidate => candidate.id !== stand.id);
+        });
     }
         return (
             <div>
@@ -25,20 +54,15 @@ export default function CookieStandAdmin() {
                     <title>Cookie Stand Admin</title>
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
-                <CookieStandHeader />
+                <CookieStandHeader  username={username} onlogout={onlogout}/>
                 <main className="flex flex-col items-center justify-center flex-1 px-20 text-center">
                   
                     <p className="m-8"></p>
 
-                    <CookieStandForm onCreate={onCreate}/>
-                       {(stands.length)?
-                        <CookieStandTable stands={stands}/>:
-                        <h2>No Cookie Stands Available</h2>
-                       }
-                    
-                </main>
-
-                <CookieStandFooter stands={stands}/>
+                    <CookieStandForm onCreate={createHandler}/>
+                    <CookieStandTable stands={cookieStands} onDelete={deleteHandler} />
+            </main>
+            <CookieStandFooter reports={cookieStands} />
 
             </div>
 
