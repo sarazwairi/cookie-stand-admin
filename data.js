@@ -18,7 +18,7 @@ export class CookieStand {
 
     static fromValues(values) {
         const info = {
-            id: -1, // will be overwritten once cache revalidates
+            id: -1, 
             location: values.location,
             minimum_customers_per_hour: values.min,
             maximum_customers_per_hour: values.max,
@@ -42,7 +42,6 @@ export async function getToken(values) {
     return refreshResponse.data.access;
 }
 
-// GET from API with authentication
 export async function fetchWithToken(url, token) {
 
     const config = makeConfig(token);
@@ -51,7 +50,6 @@ export async function fetchWithToken(url, token) {
 
     const stands = response.data.map(info => new CookieStand(info));
 
-    // Sort alphabetically
     stands.sort((a, b) => {
         if (a.location < b.location) return -1;
         if (a.location > b.location) return 1;
@@ -62,11 +60,10 @@ export async function fetchWithToken(url, token) {
 }
 
 
-// POST to API with authentication
 export async function postWithToken(token, values) {
 
     const body = {
-        id: -1, // will be overwritten once cache revalidates
+        id: -1, 
         location: values.location,
         minimum_customers_per_hour: values.min,
         maximum_customers_per_hour: values.max,
@@ -89,7 +86,7 @@ export async function deleteWithToken(id, token) {
 
 }
 
-// helper function to handle getting Authorization headers EXACTLY right
+
 function makeConfig(token) {
     return {
         headers: {
