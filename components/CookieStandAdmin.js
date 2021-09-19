@@ -25,7 +25,9 @@ export default function CookieStandAdmin({ token, onlogout, username }) {
 
         const newStand = CookieStand.fromValues(values);
 
+
         newStand.location += '...';
+
 
         const updatedStands = [newStand, ...cookieStands]
 
@@ -59,6 +61,7 @@ export default function CookieStandAdmin({ token, onlogout, username }) {
                 <p className="m-8"></p>
 
                 <CookieStandForm onCreate={createHandler} />
+
                 {cookieStands.length === 0 ? (
                     <h2 className="mt-8 mb-8 ml-auto mr-auto text-center w-5/6">
                         No Cookie Stands Available
@@ -66,6 +69,7 @@ export default function CookieStandAdmin({ token, onlogout, username }) {
                 ) : (
                     <CookieStandTable stands={cookieStands} onDelete={deleteHandler} />
                 )}
+
             </main>
             <CookieStandFooter reports={cookieStands} />
 

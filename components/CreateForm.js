@@ -71,7 +71,10 @@ return (
           Location
         </label>
         <input
+
           id="location"
+
+
           className="px-3 py-2 mx-8 border text-grey-darkest"
           name="location"
           placeholder="Cookie Stand Location"
@@ -85,7 +88,9 @@ return (
           min Customers per Hour
         </label>
         <input
+
           id="min"
+
           className="px-3 mx-5 border text-grey-darkest"
           name="min"
           // value={values.min} onChange={inputChangeHandler}
@@ -98,20 +103,26 @@ return (
           max Customers per Hour
         </label>
         <input
+
           id="max"
+
           className="px-3 mx-5 border text-grey-darkest"
           name="max"
           // value={values.max} onChange={inputChangeHandler}
         />
       </div>
       <div className="flex flex-col rounded  col-span-2 bg-green-200 border-2 border-green-400">
+
         <label htmlFor="avg"
+
           className="mb-2 font-bold text-grey-darkest"
         >
           Average Cookies per Sale
         </label>
         <input
+
           id="avg"
+
           className="px-3 mx-5  border text-grey-darkest"
           name="avg"
           // value={values.avg} onChange={inputChangeHandler}
