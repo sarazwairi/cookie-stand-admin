@@ -12,8 +12,8 @@ export class CookieStand {
         this.minCustomersPerHour = info.minimum_customers_per_hour;
         this.maxCustomersPerHour = info.maximum_customers_per_hour;
         this.avgCookiesPerSale = info.average_cookies_per_sale;
-        this.cookiesEachHour = info.hourly_sales || [...hours].fill(0);
-        this.totalDailyCookies = this.cookiesEachHour.reduce((sum, val) => sum + val);
+        this.hourly_sales = info.hourly_sales || [...hours].fill(0);
+        // this.totalDailyCookies = this.cookiesEachHour.reduce((sum, val) => sum + val);
     }
 
     static fromValues(values) {
@@ -23,6 +23,7 @@ export class CookieStand {
             minimum_customers_per_hour: values.min,
             maximum_customers_per_hour: values.max,
             average_cookies_per_sale: values.avg,
+            hourly_sales:values.hourly_sales,
         }
 
         return new CookieStand(info);
@@ -68,6 +69,7 @@ export async function postWithToken(token, values) {
         minimum_customers_per_hour: values.min,
         maximum_customers_per_hour: values.max,
         average_cookies_per_sale: values.avg,
+        hourly_sales:values.hourly_sales
     }
 
     const config = makeConfig(token);
